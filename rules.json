@@ -1,8 +1,8 @@
 {
-  "!rules": "📜 LEAGUE RULES DIRECTORY\nType a specific command to view details:\n\n• !draft – Draft order, rounds & rules\n• !keepers – Keeper limits, costs & deadlines\n• !waivers – FAAB budget & pickup rules\n• !payouts – Prize money & weekly bonuses\n• !fees – Dues, penalties & fines",
-  "!draft": "🏈 DRAFT RULES:\n• 19 rounds.\n• Draft Order Choice: 7-8-9-10 (regular season), then 6-5-4-3-2-1 (playoff finish).\n• Diamond Dog Rule: $1 fine every time you attempt to draft a player who has already been drafted.",
-  "!keepers": "🔒 KEEPER RULES:\n• Limit 1 keeper per team from end-of-season roster.\n• Declaration: Must declare 48 hours before draft.\n• Cost: 4 rounds earlier than original draft position. Undrafted waiver pickups cost a 10th-round pick.\n• Cam Akers Rule: Stashed injured players cannot be kept unless they were playable and started at least once during the season.",
-  "!waivers": "⚡ WAIVER & PICKUP RULES:\n• $100 FAAB budget.\n• Weeks 1–4: 5 free pickups max. Additional pickups are $10 each.\n• Week 5+: 2 free pickups per week max. Additional pickups are $5 each.\n• Free pickup granted for any player with a season-ending injury.\n• Processing: Claims process Tuesdays ~3:00 AM ET.",
-  "!payouts": "💰 FEES & PAYOUTS:\n• Weekly High Points: $20/wk (Weeks 1–14).\n• Weekly Low Points Fine: $5/wk (Weeks 1–14).\n• Most Total Season Points: $100.\n• Position Leader Bonus ($25 each): Highest scoring QB, RB, WR, and TE at the end of Week 14.",
-  "!fees": "⚠️ FEES & PENALTIES:\n• Entry Fee: $180 (due before draft).\n• Diamond Dog Fine: $1 per duplicate draft attempt.\n• Pickup Fines: $10/extra (Wks 1–4) | $5/extra (Wks 5+).\n• Weekly Low Score: $5 fine."
+  "!rules": "📜 LEAGUE RULES DIRECTORY\nType a command to view details:\n\n• !draft – Draft order & roster limits\n• !keepers – Keeper declarations & costs\n• !waivers – FAAB & transaction limits\n• !payouts – Prize money & weekly bonuses\n• !fees – Dues & penalty fines",
+  "!draft": "🏈 DRAFT RULES:\n• 19 rounds total.\n• Pick choice based on regular season and playoff finishes.\n• Duplicate draft attempt fine: $1 per mistake.",
+  "!keepers": "🔒 KEEPER RULES:\n• Max 1 keeper per team.\n• Must declare 48 hours before draft night.\n• Cost: 4 rounds prior to original draft round.",
+  "!waivers": "⚡ WAIVER RULES:\n• $100 FAAB starting budget.\n• Weeks 1–4: 5 free pickups max, then $10 per extra.\n• Weeks 5+: 2 free pickups max, then $5 per extra.",
+  "!payouts": "💰 PAYOUTS:\n• Weekly High Score: $20/week\n• Season Highest Total Points: $100\n• Position Group Leaders: $25 each (QB, RB, WR, TE)",
+  "!fees": "⚠️ FEES & FINES:\n• Entry Fee: $180 (due before draft).\n• Weekly Low Score Fine: $5\n• Extra Pickups: $5–$10 depending on week."
 }
