@@ -1,37 +1,22 @@
-const express = require('express');
-const axios = require('axios');
-const { GoogleGenAI } = require('@google/genai');
-const rulesData = require('./rules.json');
-
-const app = express();
-app.use(express.json());
-
-// Automatically picks up process.env.GEMINI_API_KEY
-const ai = new GoogleGenAI({}); 
-
-async function getAiAnswer(userQuestion) {
-  const systemInstruction = `
-You are the official Commissioner AI for the Woodford Fantasy Football League.
-Use the following official league rules to answer questions:
-${JSON.stringify(rulesData, null, 2)}
-
-Rules for responses:
-1. Keep answers concise (2-3 sentences max).
-2. Use a witty, sports commissioner tone.
-`;
+async function sendGroupMeMessage(text) {
+  // Check if BOT_ID is missing before sending
+  if (!BOT_ID) {
+    console.error('Error: BOT_ID environment variable is missing in Render!');
+    return;
+  }
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: userQuestion,
-      config: {
-        systemInstruction: systemInstruction,
-      },
+    await axios.post('https://api.groupme.com/v3/bots/post', {
+      bot_id: BOT_ID,
+      text: text
     });
-
-    return response.text;
-  } catch (err) {
-    console.error('Gemini API Error:', err.message || err);
-    return 'The Commissioner is temporarily taking a timeout. Check back in a moment.';
+    console.log('Successfully sent response to GroupMe!');
+  } catch (error) {
+    // Print explicit error details instead of raw error objects
+    if (error.response) {
+      console.error('GroupMe API Rejected Request:', error.response.status, error.response.data);
+    } else {
+      console.error('Network/Socket Error:', error.message);
+    }
   }
 }
