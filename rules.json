@@ -1,8 +1,10 @@
 {
-  "!rules": "📜 LEAGUE RULES DIRECTORY\nType a command to view details:\n\n• !draft – Draft order & roster limits\n• !keepers – Keeper declarations & costs\n• !waivers – FAAB & transaction limits\n• !payouts – Prize money & weekly bonuses\n• !fees – Dues & penalty fines",
-  "!draft": "🏈 DRAFT RULES:\n• 19 rounds total.\n• Pick choice based on regular season and playoff finishes.\n• Duplicate draft attempt fine: $1 per mistake.",
-  "!keepers": "🔒 KEEPER RULES:\n• Max 1 keeper per team.\n• Must declare 48 hours before draft night.\n• Cost: 4 rounds prior to original draft round.",
-  "!waivers": "⚡ WAIVER RULES:\n• $100 FAAB starting budget.\n• Weeks 1–4: 5 free pickups max, then $10 per extra.\n• Weeks 5+: 2 free pickups max, then $5 per extra.",
-  "!payouts": "💰 PAYOUTS:\n• Weekly High Score: $20/week\n• Season Highest Total Points: $100\n• Position Group Leaders: $25 each (QB, RB, WR, TE)",
-  "!fees": "⚠️ FEES & FINES:\n• Entry Fee: $180 (due before draft).\n• Weekly Low Score Fine: $5\n• Extra Pickups: $5–$10 depending on week."
+  "!What can i ask?": "📖 Directory: !fees, !pickups, !keepers, !payouts, !draft, !deadlines, !playoffs",
+  "!fees": "💰 $180 entry due before draft [1, 2]. 📉 $5 weekly low point penalty [2-4]. 🍾 Last place brings Woodford bottle to next draft [2, 4, 5].",
+  "!pickups": "🎟️ $100 FAAB budget [6]. 🆓 Wks 1-4: 5 total free, then $10/ea; Wk 5+: 2/week free, then $5/ea [2, 4, 6]. 🚑 Free pickup for season-ending IR [2, 7].",
+  "!keepers": "🔄 1 keeper [8]. 📉 -4 rounds from original draft or 10th for waivers [8, 9]. 🚫 Cam Akers Rule: must be playable and started once [9, 10]. ⏰ Declare 48h before draft [10].",
+  "!payouts": "🏆 Weekly High: $20 [2, 4, 11]. 🥇 Season High: $100 [4, 11]. 🏈 Top QB/RB/WR/TE: $25 [2, 4, 11]. 🎖️ Playoffs: 1st (65%), 2nd (35%), 3rd ($150) [4].",
+  "!draft": "🐍 19 rounds [1, 2]. 💎 Diamond Dog: $1 per attempt to draft taken player [1, 3, 4]. 🏥 1 IR slot (post-draft move only) [12]. ❌ No trading players for future picks [13].",
+  "!deadlines": "⏳ Keepers: 48h before draft [10]. 🤝 Trades: Nov 22, 2025 [13]. 🏈 Regular Season: Wks 1-14 [13]. 🏁 Playoffs: Wks 15-17 [3].",
+  "!playoffs": "🧊 Weeks 15-17 [3]. 🔄 Teams reseed every round (1 seed vs lowest remaining) [9]. 💵 Top 3 teams paid out [5]."
 }
