@@ -9,29 +9,27 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const BOT_ID = process.env.BOT_ID;
 
-// Pass an empty options object so the SDK constructor doesn't read undefined properties
+// Pass empty object to prevent SDK constructor errors
 const ai = new GoogleGenAI({});
 
 app.post('/', async (req, res) => {
   const { sender_type, text } = req.body;
 
-  // Prevent bot from replying to its own messages
   if (sender_type !== 'bot' && text) {
     const cleanedText = text.trim();
     const lowerCommand = cleanedText.toLowerCase();
 
-    // 1. Direct match with static rules
+    // 1. Direct static rule lookup
     if (rulesData[lowerCommand]) {
       await sendGroupMeMessage(rulesData[lowerCommand]);
     } 
-    // 2. Fallback to Gemini AI if input starts with '!' or mentions 'bot'
+    // 2. Gemini AI fallback
     else if (cleanedText.startsWith('!') || cleanedText.toLowerCase().includes('bot')) {
       const aiReply = await getAiAnswer(cleanedText);
       await sendGroupMeMessage(aiReply);
     }
   }
 
-  // Always acknowledge webhook immediately with 200 OK
   res.status(200).json({ status: 'ok' });
 });
 
@@ -51,7 +49,7 @@ Rules for responses:
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       contents: userQuestion,
       config: {
         systemInstruction: systemInstruction,
