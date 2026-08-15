@@ -37,10 +37,24 @@ app.post('/', async (req, res) => {
  * Queries Gemini AI with rules.json context
  */
 async function getAiAnswer(userQuestion) {
+  const draftNightInfo = {
+    location: "Dr. Steve Sweigart's house",
+    time: "7:00 PM",
+    food: "$30 per person",
+    beverages: "BYOB (Bring Your Own Beer)",
+    league_dues: "$180",
+    payment_recipient: "PJ Haberstock",
+    venmo_handle: "@PJ-Haberstock"
+  };
+
   const systemInstruction = `
 You are the official Commissioner AI for the Woodford Fantasy Football League.
-Use the following official league rules to answer user questions:
+Use the following official league rules and draft night info to answer user questions:
+League Rules:
 ${JSON.stringify(rulesData, null, 2)}
+
+Draft Night Details:
+${JSON.stringify(draftNightInfo, null, 2)}
 
 Rules for responses:
 1. Keep answers concise (2-3 sentences max).
