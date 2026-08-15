@@ -1,10 +1,118 @@
 {
-  "!What can i ask?": "📖 Directory: !fees, !pickups, !keepers, !payouts, !draft, !deadlines, !playoffs",
-  "!fees": "💰 $180 entry due before draft [1, 2]. 📉 $5 weekly low point penalty [2-4]. 🍾 Last place brings Woodford bottle to next draft [2, 4, 5].",
-  "!pickups": "🎟️ $100 FAAB budget [6]. 🆓 Wks 1-4: 5 total free, then $10/ea; Wk 5+: 2/week free, then $5/ea [2, 4, 6]. 🚑 Free pickup for season-ending IR [2, 7].",
-  "!keepers": "🔄 1 keeper [8]. 📉 -4 rounds from original draft or 10th for waivers [8, 9]. 🚫 Cam Akers Rule: must be playable and started once [9, 10]. ⏰ Declare 48h before draft [10].",
-  "!payouts": "🏆 Weekly High: $20 [2, 4, 11]. 🥇 Season High: $100 [4, 11]. 🏈 Top QB/RB/WR/TE: $25 [2, 4, 11]. 🎖️ Playoffs: 1st (65%), 2nd (35%), 3rd ($150) [4].",
-  "!draft": "🐍 19 rounds [1, 2]. 💎 Diamond Dog: $1 per attempt to draft taken player [1, 3, 4]. 🏥 1 IR slot (post-draft move only) [12]. ❌ No trading players for future picks [13].",
-  "!deadlines": "⏳ Keepers: 48h before draft [10]. 🤝 Trades: Nov 22, 2025 [13]. 🏈 Regular Season: Wks 1-14 [13]. 🏁 Playoffs: Wks 15-17 [3].",
-  "!playoffs": "🧊 Weeks 15-17 [3]. 🔄 Teams reseed every round (1 seed vs lowest remaining) [9]. 💵 Top 3 teams paid out [5]."
+  "league_rules": {
+    "version": "1.0",
+    "last_updated": "2025-08-17",
+    "pre_season": {
+      "fees": {
+        "season_fee_usd": 180.00,
+        "due_date": "Before draft commences"
+      },
+      "draft": {
+        "rounds": 19,
+        "penalties": [
+          {
+            "name": "The DD Rule",
+            "description": "Attempting to draft a player who has already been drafted.",
+            "fee_usd": 1.00
+          }
+        ],
+        "draft_position_selection_order": [
+          "Regular season finish 7th",
+          "Regular season finish 8th",
+          "Regular season finish 9th",
+          "Regular season finish 10th",
+          "Playoff finish 6th",
+          "Playoff finish 5th",
+          "Playoff finish 4th",
+          "Playoff finish 3rd",
+          "Playoff finish 2nd",
+          "Playoff finish 1st"
+        ]
+      },
+      "rosters": {
+        "active_roster_size": 19,
+        "ir_slots": 1,
+        "ir_rules": [
+          "IR slot is for players placed on IR after the draft.",
+          "Drafting an IR player counts toward the 19 active spots during the draft.",
+          "Post-draft, an IR player can move to the IR slot, opening an active spot for waivers.",
+          "When a player is activated from IR, managers must make room on the 19-man active roster or drop the player."
+        ]
+      },
+      "keepers": {
+        "max_keepers": 1,
+        "eligibility_source": "End-of-season roster from previous season",
+        "cost_rules": {
+          "previously_drafted": "Kept 4 rounds earlier than original draft position (e.g., 15th round keeper costs 11th round pick).",
+          "undrafted_waiver_pickup": "Automatically costs a 10th round pick."
+        },
+        "special_rules": [
+          {
+            "name": "Cam Akers Rule",
+            "description": "An inactive/IR player picked up during the season can only be kept if playable during that same league season and started at least once. Inactive stashes with season-ending injuries are ineligible."
+          }
+        ],
+        "deadline_hours_before_draft": 48,
+        "injury_exception": "If a declared keeper suffers an injury between declaration and draft, the manager may select an alternative player with immediate notice to the league."
+      }
+    },
+    "in_season": {
+      "scoring": "Yahoo standard with custom settings",
+      "waivers_and_pickups": {
+        "faab_budget_usd": 100,
+        "tiebreaker": "Reverse standings order",
+        "fee_structure": {
+          "weeks_1_to_4": {
+            "free_pickups_limit": 5,
+            "cost_per_pickup_after_limit_usd": 10.00
+          },
+          "weeks_5_onward": {
+            "free_pickups_limit_per_week": 2,
+            "cost_per_pickup_after_limit_usd": 5.00
+          },
+          "exemptions": [
+            "A free waiver pickup is granted for any player on a roster who suffers a season-ending injury."
+          ]
+        },
+        "timeline_et": {
+          "thursday_lock": "8:15 PM",
+          "sunday_early_lock": "1:00 PM",
+          "sunday_afternoon_lock": "4:25 PM",
+          "sunday_night_lock": "8:20 PM",
+          "monday_lock": "8:15 PM",
+          "claim_deadline": "Monday night before Yahoo processing",
+          "processing_time": "Tuesday ~3:00 AM",
+          "free_agency_open": "Tuesday morning (instant pickups)"
+        }
+      },
+      "trading": {
+        "rules": "Yahoo standard rules apply.",
+        "trade_deadline": "2025-11-22",
+        "draft_pick_trading": false,
+        "notes": "Draft pick trading banned by league vote on 8/17/2025."
+      }
+    },
+    "playoffs_and_end_of_season": {
+      "schedule": {
+        "regular_season_weeks": "1-14",
+        "playoff_weeks": "15-17"
+      },
+      "end_of_season_fees": [
+        "Diamond Dog Penalty: $1 per duplicate draft attempt.",
+        "Waiver overage fees ($10/pickup over 5 in W1-4; $5/pickup over 2/wk from W5+).",
+        "Weekly Low Scorer Fee: $5 per week (Weeks 1-14). Ties result in all tied teams paying $5."
+      ],
+      "payouts": {
+        "weekly_high_scorer_usd": 20.00,
+        "weekly_high_scorer_weeks": "1-14 (ties pay out to all tied teams)",
+        "positional_season_high_point_bonus_usd": 25.00,
+        "positional_eligible_positions": ["QB", "RB", "WR", "TE"],
+        "regular_season_points_champion_usd": 100.00,
+        "playoffs": "Top 3 teams payout structure (see league payout settings)"
+      },
+      "punishments": {
+        "lowest_total_regular_season_points": "Must bring a bottle of Woodford Reserve to next year's draft."
+      }
+    }
+  }
 }
