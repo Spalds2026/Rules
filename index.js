@@ -9,8 +9,8 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const BOT_ID = process.env.BOT_ID;
 
-// Automatically uses process.env.GEMINI_API_KEY
-const ai = new GoogleGenAI();
+// Pass an empty options object so the SDK constructor doesn't read undefined properties
+const ai = new GoogleGenAI({});
 
 app.post('/', async (req, res) => {
   const { sender_type, text } = req.body;
@@ -60,7 +60,7 @@ Rules for responses:
 
     return response.text;
   } catch (error) {
-    console.error('Gemini API Error details:', error);
+    console.error('Gemini API Error details:', error.message || error);
     return 'The Commissioner is temporarily taking a timeout. Try asking again in a moment.';
   }
 }
