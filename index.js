@@ -34,7 +34,7 @@ app.post('/', async (req, res) => {
 });
 
 /**
- * Queries Gemini AI with rules.json context
+ * Queries Gemini AI using the Interactions API
  */
 async function getAiAnswer(userQuestion) {
   const systemInstruction = `
@@ -48,12 +48,11 @@ Rules for responses:
 `;
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await ai.interactions.create({
       model: 'gemini-2.5-flash',
-      contents: userQuestion,
-      config: {
-        systemInstruction: systemInstruction,
-      },
+      input: userQuestion,
+      systemInstruction: systemInstruction,
+      store: false // Stateless request
     });
 
     return response.text;
