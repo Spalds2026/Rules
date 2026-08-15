@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const { GoogleGenAI } = require('@google/genai');
 const rulesData = require('./rules.json');
 
 const app = express();
@@ -8,29 +9,68 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const BOT_ID = process.env.BOT_ID;
 
+// Automatically reads process.env.GEMINI_API_KEY
+const ai = new GoogleGenAI({});
+
 app.post('/', async (req, res) => {
   const { sender_type, text } = req.body;
 
-  // 1. Ignore messages sent by the bot itself to prevent infinite loops
+  // Prevent bot from replying to its own messages
   if (sender_type !== 'bot' && text) {
-    const command = text.trim().toLowerCase();
+    const cleanedText = text.trim();
+    const lowerCommand = cleanedText.toLowerCase();
 
-    // 2. Check if the message matches a key in rules.json
-    if (rulesData[command]) {
-      await sendGroupMeMessage(rulesData[command]);
+    // 1. Direct match with static rules
+    if (rulesData[lowerCommand]) {
+      await sendGroupMeMessage(rulesData[lowerCommand]);
+    } 
+    // 2. Fallback to Gemini AI if input starts with '!' or mentions 'bot'
+    else if (cleanedText.startsWith('!') || cleanedText.toLowerCase().includes('bot')) {
+      const aiReply = await getAiAnswer(cleanedText);
+      await sendGroupMeMessage(aiReply);
     }
   }
 
-  // Always return 200 OK immediately so GroupMe doesn't timeout
+  // Always acknowledge webhook immediately with 200 OK
   res.status(200).json({ status: 'ok' });
 });
 
 /**
- * Posts response messages back to GroupMe.
+ * Queries Gemini AI with rules.json context
+ */
+async function getAiAnswer(userQuestion) {
+  const systemInstruction = `
+You are the official Commissioner AI for the Woodford Fantasy Football League.
+Use the following official league rules to answer user questions:
+${JSON.stringify(rulesData, null, 2)}
+
+Rules for responses:
+1. Keep answers concise (2-3 sentences max).
+2. Use a witty, helpful sports commissioner tone.
+`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: userQuestion,
+      config: {
+        systemInstruction: systemInstruction,
+      },
+    });
+
+    return response.text;
+  } catch (error) {
+    console.error('Gemini API Error:', error.message || error);
+    return 'The Commissioner is temporarily taking a timeout. Try asking again in a moment.';
+  }
+}
+
+/**
+ * Posts response back to GroupMe
  */
 async function sendGroupMeMessage(text) {
   if (!BOT_ID) {
-    console.error('Error: BOT_ID environment variable is missing in Render!');
+    console.error('Error: BOT_ID environment variable is missing!');
     return;
   }
 
@@ -39,9 +79,7 @@ async function sendGroupMeMessage(text) {
       bot_id: BOT_ID,
       text: text,
     });
-    console.log('Successfully sent message to GroupMe.');
   } catch (error) {
-    // Safe error logging to prevent raw socket object dumps
     if (error.response) {
       console.error('GroupMe API Error:', error.response.status, error.response.data);
     } else {
@@ -50,4 +88,4 @@ async function sendGroupMeMessage(text) {
   }
 }
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
