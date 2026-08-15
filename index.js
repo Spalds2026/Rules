@@ -9,7 +9,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const BOT_ID = process.env.BOT_ID;
 
-// Pass empty object to prevent SDK constructor errors
+// Automatically uses GEMINI_API_KEY environment variable
 const ai = new GoogleGenAI({});
 
 app.post('/', async (req, res) => {
@@ -34,7 +34,7 @@ app.post('/', async (req, res) => {
 });
 
 /**
- * Queries Gemini AI using the Interactions API
+ * Queries Gemini AI with rules.json context
  */
 async function getAiAnswer(userQuestion) {
   const systemInstruction = `
@@ -48,11 +48,12 @@ Rules for responses:
 `;
 
   try {
-    const response = await ai.interactions.create({
-      model: 'gemini-2.5-flash',
-      input: userQuestion,
-      systemInstruction: systemInstruction,
-      store: false // Stateless request
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: userQuestion,
+      config: {
+        systemInstruction: systemInstruction,
+      },
     });
 
     return response.text;
