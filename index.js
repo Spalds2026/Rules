@@ -38,6 +38,7 @@ app.post('/', async (req, res) => {
  */
 async function getAiAnswer(userQuestion) {
   const draftNightInfo = {
+    date: "Saturday, August 22nd",
     location: "Dr. Steve Sweigart's house",
     time: "7:00 PM",
     food: "$30 per person",
