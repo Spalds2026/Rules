@@ -17,16 +17,22 @@ app.post('/', async (req, res) => {
 
   if (sender_type !== 'bot' && text) {
     const cleanedText = text.trim();
-    const lowerCommand = cleanedText.toLowerCase();
 
-    // 1. Direct static rule lookup
-    if (rulesData[lowerCommand]) {
-      await sendGroupMeMessage(rulesData[lowerCommand]);
-    } 
-    // 2. Gemini AI fallback
-    else if (cleanedText.startsWith('!') || cleanedText.toLowerCase().includes('bot')) {
-      const aiReply = await getAiAnswer(cleanedText);
-      await sendGroupMeMessage(aiReply);
+    // 1. Guard check: Ignore any message that does NOT start with @bot
+    if (cleanedText.toLowerCase().startsWith('@bot')) {
+      // Strip out "@bot" prefix and clean up extra spaces
+      const userPrompt = cleanedText.slice(4).trim();
+      const lowerCommand = userPrompt.toLowerCase();
+
+      // 2. Direct static rule lookup (e.g., "@bot !rules" or "@bot rules")
+      if (rulesData[lowerCommand]) {
+        await sendGroupMeMessage(rulesData[lowerCommand]);
+      } 
+      // 3. Fallback to Gemini AI for all other questions asked to @bot
+      else {
+        const aiReply = await getAiAnswer(userPrompt || cleanedText);
+        await sendGroupMeMessage(aiReply);
+      }
     }
   }
 
@@ -64,7 +70,7 @@ Rules for responses:
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.5-flash',
       contents: userQuestion,
       config: {
         systemInstruction: systemInstruction,
