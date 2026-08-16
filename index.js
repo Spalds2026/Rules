@@ -1,44 +1,3 @@
-const express = require('express');
-const axios = require('axios');
-const { GoogleGenAI } = require('@google/genai');
-const rulesData = require('./rules.json');
-
-const app = express();
-app.use(express.json());
-
-const PORT = process.env.PORT || 3000;
-const BOT_ID = process.env.BOT_ID;
-
-// Automatically uses GEMINI_API_KEY environment variable
-const ai = new GoogleGenAI({});
-
-app.post('/', async (req, res) => {
-  const { sender_type, text } = req.body;
-
-  if (sender_type !== 'bot' && text) {
-    const cleanedText = text.trim();
-
-    // 1. Guard check: Ignore any message that does NOT start with @bot
-    if (cleanedText.toLowerCase().startsWith('@bot')) {
-      // Strip out "@bot" prefix and clean up extra spaces
-      const userPrompt = cleanedText.slice(4).trim();
-      const lowerCommand = userPrompt.toLowerCase();
-
-      // 2. Direct static rule lookup (e.g., "@bot !rules" or "@bot rules")
-      if (rulesData[lowerCommand]) {
-        await sendGroupMeMessage(rulesData[lowerCommand]);
-      } 
-      // 3. Fallback to Gemini AI for all other questions asked to @bot
-      else {
-        const aiReply = await getAiAnswer(userPrompt || cleanedText);
-        await sendGroupMeMessage(aiReply);
-      }
-    }
-  }
-
-  res.status(200).json({ status: 'ok' });
-});
-
 /**
  * Queries Gemini AI with rules.json context
  */
@@ -64,8 +23,9 @@ Draft Night Details:
 ${JSON.stringify(draftNightInfo, null, 2)}
 
 Rules for responses:
-1. Keep answers concise (2-3 sentences max).
-2. Use a witty, helpful sports commissioner tone.
+1. Provide short, direct, matter-of-fact answers.
+2. Do not use humor, banter, or conversational fluff.
+3. Keep responses to 1-2 concise sentences whenever possible.
 `;
 
   try {
@@ -80,31 +40,6 @@ Rules for responses:
     return response.text;
   } catch (error) {
     console.error('Gemini API Error details:', error.message || error);
-    return 'The Commissioner is temporarily taking a timeout. Try asking again in a moment.';
+    return 'Service unavailable. Try asking again in a moment.';
   }
 }
-
-/**
- * Posts response back to GroupMe
- */
-async function sendGroupMeMessage(text) {
-  if (!BOT_ID) {
-    console.error('Error: BOT_ID environment variable is missing!');
-    return;
-  }
-
-  try {
-    await axios.post('https://api.groupme.com/v3/bots/post', {
-      bot_id: BOT_ID,
-      text: text,
-    });
-  } catch (error) {
-    if (error.response) {
-      console.error('GroupMe API Error:', error.response.status, error.response.data);
-    } else {
-      console.error('Network Error:', error.message);
-    }
-  }
-}
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
