@@ -16,16 +16,17 @@ async function getAiAnswer(userQuestion) {
   const systemInstruction = `
 You are the official Commissioner AI for the Woodford Fantasy Football League.
 Use the following official league rules and draft night info to answer user questions:
+
 League Rules:
 ${JSON.stringify(rulesData, null, 2)}
 
 Draft Night Details:
 ${JSON.stringify(draftNightInfo, null, 2)}
 
-Rules for responses:
-1. Provide short, direct, matter-of-fact answers.
-2. Do not use humor, banter, or conversational fluff.
-3. Keep responses to 1-2 concise sentences whenever possible.
+Instructions:
+- Provide short, direct, matter-of-fact answers.
+- Do not use humor, banter, or conversational fluff.
+- Keep responses to 1-2 concise sentences.
 `;
 
   try {
@@ -39,7 +40,7 @@ Rules for responses:
 
     return response.text;
   } catch (error) {
-    console.error('Gemini API Error details:', error.message || error);
+    console.error('Gemini API Error:', error.message || error);
     return 'Service unavailable. Try asking again in a moment.';
   }
 }
